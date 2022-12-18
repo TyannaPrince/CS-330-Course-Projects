@@ -1,9 +1,9 @@
-#include <iostream>         // cout, cerr
-#include <cstdlib>          // EXIT_FAILURE
-#include <GL/glew.h>        // GLEW library
-#include <GLFW/glfw3.h>     // GLFW library
+#include <iostream>  //cout, cerr
+#include <cstdlib>  //EXIT_FAILURE
+#include <GL/glew.h>  //Glew library
+#include <GLFW/glfw3.h> //GLFW library
 
-// GLM Math Header inclusions
+//GLM Math Header inclusions
 #include <glm/glm.hpp>
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,7 +18,7 @@ using namespace std; // Standard namespace
 // Unnamed namespace
 namespace
 {
-    const char* const WINDOW_TITLE = "Module 3 Building a 3D Pyramid"; // Macro for window title
+    const char* const WINDOW_TITLE = "3D Scene monitor by Tyanna Prince"; // Macro for window title
 
     // Variables for window width and height
     const int WINDOW_WIDTH = 800;
@@ -197,10 +197,10 @@ void URender()
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // 1. Scales the object by 2
-    glm::mat4 scale = glm::scale(glm::vec3(2.0f, 2.0f, 2.0f));
-    // 2. Rotates shape by 15 degrees in the x axis
-    glm::mat4 rotation = glm::rotate(45.0f, glm::vec3(1.0, 1.0f, 1.0f));
+    // 1. Scales the object creating a rectangle
+    glm::mat4 scale = glm::scale(glm::vec3(2.0f, 1.0f, 2.0f));
+    // 2. Rotates shape by 0 degrees in the x axis
+    glm::mat4 rotation = glm::rotate(0.0f, glm::vec3(2.0, 1.0f, 2.0f));
     // 3. Place object at the origin
     glm::mat4 translation = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
     // Model matrix: transformations are applied right-to-left order
@@ -210,7 +210,7 @@ void URender()
     glm::mat4 view = glm::translate(glm::vec3(0.0f, 0.0f, -5.0f));
 
     // Creates a perspective projection
-    glm::mat4 projection = glm::perspective(45.0f, (GLfloat)WINDOW_WIDTH / (GLfloat)WINDOW_HEIGHT, 0.1f, 100.0f);
+    glm::mat4 projection = glm::perspective(45.0f, (GLfloat)WINDOW_WIDTH / (GLfloat)WINDOW_HEIGHT, 0.2f, 100.0f);
 
     // Set the shader to be used
     glUseProgram(gProgramId);
@@ -245,21 +245,26 @@ void UCreateMesh(GLMesh& mesh)
     GLfloat verts[] = {
 
         // Vertex Positions  // Colors (r,g,b,a)
-        0.5f, 1.0f, 0.0f,    1.0f, 0.0f, 0.0f, 1.0f,  // Top Vertex 0
-        -0.3f, 0.0f, -1.3f,  0.0f, 1.0f, 0.0f, 1.0f, // Bottom Left Vertex 1
-        0.6f, 0.0f, -1.0f,   0.0f, 0.0f, 1.0f, 1.0f,// Bottom Right Vertex 2
-        0.4f, 0.0f, 0.7f,    1.0f, 0.0f, 1.0f, 1.0f, // Bottom Right Vertex 3
-        -0.2f, 0.0f, -0.1f,  0.5f, 0.5f, 1.0f, 1.0f, // Bottom Left Vertex 4
+        -0.5f, 0.5f, -0.5f,    1.0f, 0.0f, 0.0f, 1.0f,  // bottom left front face Vertex 0
+        -0.5f, 0.5f, -0.5f,  0.0f, 1.0f, 0.0f, 1.0f, // top left front face Vertex 1
+        0.5f, 0.5f, -0.5f,   0.0f, 0.0f, 1.0f, 1.0f,// top right front face Vertex 2
+        0.5f, -0.5f, -0.5f,    1.0f, 0.0f, 1.0f, 1.0f, // Bottom Right front face Vertex 3
+        0.5f, -0.5f, 0.5f,  0.5f, 0.5f, 1.0f, 1.0f, // Bottom right back face Vertex 4
+        0.5f, 0.5f, 0.5f,  1.0f, 0.0f, 0.0f, 1.0f,  // top right back face vertex 5
+        -0.5f, 0.5f, 0.5f, 0.0f, 1.0f, 0.0f, 1.0f,  // top left back face vertex 6
+        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, 1.0f, 1.0f, //bottom left back face vertex 7
     };
 
     // Index data to share position data
     GLushort indices[] = {
         0, 1, 2,  // Triangle 1
-        0, 1, 4,   // Triangle 2
-        0, 4, 3, // Triangle 3
-        0, 3, 2, // Triangle 4
-        1, 2, 3, // Triangle 5
-        1, 4, 3, // Triangle 6
+        2, 3, 0,   // Triangle 2
+        4, 5, 6, // Triangle 3
+        6, 7, 4, // Triangle 4
+        4, 5, 2, // Triangle 5
+        2, 3, 4, // Triangle 6
+        0, 1, 6, // Triangle 7
+        6, 7, 0, // Triangle 8
 
     };
 
